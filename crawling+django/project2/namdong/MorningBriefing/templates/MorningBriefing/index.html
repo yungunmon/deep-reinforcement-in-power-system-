@@ -1,0 +1,121 @@
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>KOEN 경영정보 검색시스템</title>
+
+
+  <!-- Bootstrap core CSS -->
+  <link href="{% static '/vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+
+<!-- Custom fonts for this template -->
+  <link href="{% static 'vendor/fontawesome-free/css/all.min.css' %}" rel="stylesheet">
+  <link href="{% static 'vendor/simple-line-icons/css/simple-line-icons.css' %}" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic,700italic" rel="stylesheet" type="text/css">
+
+  <!-- Custom styles for this template -->
+  <link href="{% static 'css/landing-page.min.css' %}" rel="stylesheet">
+<style>
+  .overlay{
+    background-image: url("http://koenergy.kr/kosep/static/img/main/bg_main_section04.jpg")!important
+  }
+</style>
+</head>
+
+<body>
+
+  <!-- Navigation -->
+
+
+  <!-- Masthead -->
+  <header class="masthead text-white text-center">
+<!--     <div class="overlay"></div> -->
+    <div class="container ">
+      <div class="row ">
+        <div class="col-xl-8  mx-auto">
+          <h1 class="mb-5"><font size=10 ; color="black">KOEN 경영정보 검색시스템</h1>
+        </div>
+        <div class="col-md-10 col-lg-10 col-xl-7 mx-auto">
+          <form method="post">
+            <div class="form-row">
+              <div class="col-12 col-md-9 mb-2 mb-md-0">
+                
+               <!--    {% csrf_token %}
+                 <div style="text-align: right"><font size = 3><B>start date<input type="date" style = "text-align: right;border: 0px; font-size: 3" name="start_date" value="{{start_date}}" class="form-control form-control-lg" ></B></font>
+
+                    <div style="text-align: right"><font size = 3><B>end  date<input type="date" style = "text-align: right;border: 0px; font-size: 3" name="end_date" value="{{end_date}}" class="form-control form-control-lg"  ></B></font>
+
+                         <button type="submit" class="btn btn-block btn-lg btn-primary" value="검색">검색</button>
+
+
+                      </div>
+              <div class="col-12 col-md-3">
+
+               -->
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Icons Grid -->
+  <section class="features-icons bg-light text-center">
+    <div class="container">
+      <div class="row">
+        
+        <div class="col-lg-3">
+          <div class="features-icons-item mx-auto mb-5 mb-lg-0 mb-lg-3">
+            <div class="features-icons-icon d-flex">
+              <i class="icon-screen-desktop m-auto text-primary" onclick="location.href='발전사동향' "></i>
+            </div>
+            <h3>Morning Briefing</h3>
+            <p class="lead mb-0">매일 뉴스를 확인하고 편집합니다.</p>
+          </div>
+        </div>
+        
+        <div class="col-lg-4">
+          <div class="features-icons-item mx-auto mb-0 mb-lg-3">
+            <div class="features-icons-icon d-flex">
+              <i class="icon-check m-auto text-primary" onclick="location.href='보고서' "></i>
+            </div>
+            <h3>Report</h3>
+            <p class="lead mb-0">매일의 보고서를 갱신합니다.</p><br>
+            <p class="lead mb-0">보고서를 초기화하려면...</p>
+             <p class="lead mb-0">  <button type= "button" class= "btn btn-primary"  onclick="location.href='보고서초기화' ">보고서초기화</button></p>
+
+             
+          </div>
+          
+        </div>
+      
+        
+        <div class="col-lg-4">
+          <div class="features-icons-item mx-auto mb-5 mb-lg-0 mb-lg-3">
+            <div class="features-icons-icon d-flex">
+              <i class="icon-layers m-auto text-primary" onclick="location.href='파워인사이트' "></i>
+            </div>
+            <h3>Power Insight</h3>
+            <p class="lead mb-0">각 연구기관의 보고서와 동향을 확인합니다.</p>
+          </div>
+        </div>
+    </div>
+  </section>
+
+
+  <!-- Bootstrap core JavaScript -->
+  <script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
+  <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+
+</body>
+
+</html>

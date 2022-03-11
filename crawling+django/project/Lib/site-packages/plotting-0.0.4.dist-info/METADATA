@@ -1,0 +1,56 @@
+Metadata-Version: 2.1
+Name: plotting
+Version: 0.0.4
+Summary: UNKNOWN
+Home-page: UNKNOWN
+Author: Michael Rossol
+Author-email: mrossol@gmail.com
+License: BSD license
+Keywords: rev
+Platform: UNKNOWN
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Science/Research
+Classifier: License :: OSI Approved :: BSD License
+Classifier: Natural Language :: English
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Requires-Dist: matplotlib
+Requires-Dist: seaborn
+Provides-Extra: dev
+Requires-Dist: flake8 ; extra == 'dev'
+Requires-Dist: pre-commit ; extra == 'dev'
+Requires-Dist: pylint ; extra == 'dev'
+
+plotting
+********
+A plotting wrapper on `matplotlib <https://matplotlib.org/index.html>`_ and `seaborn <https://seaborn.pydata.org/>`_ to enable single function plotting calls a la mathematica
+
+.. inclusion-intro
+
+Installation
+==============
+
+.. code-block:: bash
+
+    pip install plotting
+
+Development
+============
+
+If you want to contribute to this package:
+
+1. Clone the repository: ``git clone https://github.com/mrossol/plotting.git``
+    1) enter github username
+    2) enter github password
+
+2. Install the pacakge
+    1) cd into plotting repo cloned above
+    2) run ``pip install -e .``
+
+3. Check that plotting was installed successfully
+    .. code-block:: python
+
+        import plotting
+
+

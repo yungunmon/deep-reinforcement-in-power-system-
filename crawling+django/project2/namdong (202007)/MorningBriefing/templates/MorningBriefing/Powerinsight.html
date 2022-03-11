@@ -1,0 +1,385 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title style="text-align:center;">Power Insight</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script></head>
+  <style>
+    .scrolltbody {
+        display: block;
+        width: 210mm;
+        border-collapse: collapse;
+        border: 2px solid #000;
+    }
+    .scrolltbody th { border: 1px solid #000; background: skyblue; text-align: center; }
+    .scrolltbody td { border: 1px solid #000; border-top: 0; }
+    .scrolltbody tbody {
+        display: block;
+        height: 300px;
+        overflow: auto;
+    }
+    .scrolltbody th:nth-of-type(1), .scrolltbody td:nth-of-type(1) { width: 150mm; }
+    .scrolltbody th:nth-of-type(2), .scrolltbody td:nth-of-type(2) { width: 60mm; }
+    .scrolltbody th:nth-of-type(3), .scrolltbody td:nth-of-type(3) { width: 10px; }
+    .scrolltbody th:last-child { width: 100px; }
+    .scrolltbody td:last-child { width: calc( 100px - 19px );  }
+    </style>
+</head>
+
+<body>
+  <nav class="navbar navbar-default">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <a class="navbar-brand" href="{% url 'MorningBriefing:home' %}">Home</a>
+      </div>
+      <ul class="nav navbar-nav">
+        <li>
+        </li>
+        
+  
+        <li><a href = "{% url 'MorningBriefing:파워인사이트'%}">파워인사이트</a></li>
+
+      </ul>
+    </div>
+  </nav>
+
+<div class="container" style=" width:90%; height: 285px; margin:auto;">
+    <table class="table table-striped">
+        <thead> 
+        <tr>
+            <td><B><font size=10>
+                PowerInsight  <br>
+        <br>
+        
+            </font></B></td>   
+        <!--    <a href="upload">파일업로드</a> -->
+       
+        </tr>
+        </thead><br>
+            <td style= "width:50px">
+              <form method="post">
+                {% csrf_token %}
+                       
+                <label style="text-align: left"><font size = 4><B>start date<input type="date" style = "text-align: right;border: 0px; font-size: 3" name="start_date" value="{{start_date}}"></B></font>
+                <label style="text-align: left"><font size = 4><B>end date<input type="date" style = "text-align: right;border: 0px; font-size: 3" name="end_date" value="{{end_date}}"></B></font>
+                <input name="search" value="{{search}}">
+                <input type="submit" class="btn btn-success" value="검색">
+              
+              </form>
+            </td>
+          </table>
+
+      <div>
+      <tbody>
+   <!--                  <table height = "500"  style="margin:auto; text-align: center;">
+                  <label style ="font-size:18pt ; width:600px; margin:auto; text-align: right; ">에너지경제연구원</label>
+
+                  
+                  <td>  <iframe width = "800" height = "500" src = "http://m.keei.re.kr/mobile.nsf/index?readform" frameborder = 1px></iframe>  </td>
+
+                  <th>제목</th>
+                  <th>출판일</th>
+                  <th>링크</th>
+                  {% for report in report %}
+                  <tr align="center"> 
+
+                  <div>{%if report.site == '에너지경제연구원'%}
+                    <td>{{report.title}}</td>
+                    <td>{{report.published_date|date:"Y.m.d"}} </td>
+                    <td><button type="submit" class="btn btn-success"  style="text-align:right;" onclick="window.open('{{report.link}}')">Go</button></td>
+                          {%endif%}
+                    </div>
+                    {%endfor%}
+                  </tr>
+              
+
+                  </table>
+      </tbody> 
+      </div>
+      <br>
+      <div>
+          <tbody>
+                <table class='scrolltbody' style="margin:auto; text-align: center;">
+                      <label style ="font-size:18pt ; width:580px; margin:auto; text-align: right; ">LG경제연구원</label>
+                      <tr>
+
+                      <th>제목</th>
+                      <th>출판일</th>
+                      <th>링크</th>
+                      {% for report in report %}
+                      <tr align="center"> 
+    
+                      <div>{%if report.site == 'LG경제연구원'%}
+                        <td>{{report.title}}</td>
+                        <td>{{report.published_date|date:"Y.m.d"}}</td>
+                        <td><button type="submit" class="btn btn-success"  style="text-align:right;" onclick="window.open('{{report.link}}')">Go</button></td>
+                              {%endif%}{%endfor%}
+                        </div>
+                      </tr>
+                    </tr>
+                      </table>
+          </tbody> 
+          </div>
+          <br>
+
+      <div>
+      <tbody>
+            <table class='scrolltbody'  style="margin:auto; text-align: center;">
+                  <label style ="font-size:18pt ; width:550px; margin:auto; text-align: right; ">코트라</label>
+                  <tr>
+
+                  <th>제목</th>
+                  <th>출판일</th>
+                  <th>링크</th>
+                  {% for report in report %}
+                  <tr align="center"> 
+
+                  <div>{%if report.site == '코트라'%}
+                    <td>{{report.title}}</td>
+                    <td>{{report.published_date|date:"Y.m.d"}}</td>
+                    <td><button type="submit" class="btn btn-success"  style="text-align:right;" onclick="window.open('{{report.link}}')">Go</button></td>
+                          {%endif%}{%endfor%}
+                    </div>
+                  </tr>
+                </tr>
+                  </table>
+      </tbody> 
+      </div>
+      <br>
+  !-->
+      <div>
+          <tbody>
+                 <table class='scrolltbody'  style="margin:auto; text-align: center;">
+                     <label style ="font-size:18pt ; width:600px; margin:auto; text-align: right; ">현대경제연구원</label>
+                      <tr>
+
+                      <th>제목</th>
+                      <th>출판일</th>
+                      <th>링크</th>
+                      {% for report in report %}
+                      <tr align="center"> 
+    
+                      <div>{%if report.site == '현대경제연구원'%}
+                        <td>{{report.title}}</td>
+                        <td>{{report.published_date|date:"Y.m.d"}}</td>
+                        <td><button type="submit" class="btn btn-success"  style="text-align:right;" onclick="window.open('{{report.link}}')">Go</button></td>
+                              {%endif%}{%endfor%}
+                        </div>
+                      </tr>
+                    </tr>
+                      </table>
+          </tbody> 
+          </div>
+          <br>
+<!--
+          <div>
+              <tbody>
+                   <table class='scrolltbody'  style="margin:auto; text-align: center;">
+                          <label style ="font-size:18pt ; width:600px; margin:auto; text-align: right; ">삼성경제연구소</label>
+                          <tr>
+
+                          <th>제목</th>
+                          <th>출판일</th>
+                          <th>링크</th>
+                          {% for report in report %}
+                          <tr align="center"> 
+        
+                          <div>{%if report.site == '삼성경제연구소'%}
+                            <td>{{report.title}}</td>
+                            <td>{{report.published_date|date:"Y.m.d"}}</td>
+                            <td><button type="submit" class="btn btn-success"  style="text-align:right;" onclick="window.open('{{report.link}}')">Go</button></td>
+                                  {%endif%}{%endfor%}
+                            </div>
+                          </tr>
+                        </tr>
+                          </table>
+              </tbody> 
+              </div>
+              <br>
+!-->
+              <div>
+                  <tbody>
+                           <table class='scrolltbody' style="margin:auto; text-align: center;">
+                              <label style ="font-size:18pt ; width:620px; margin:auto; text-align: right; ">포스코경영연구원</label>
+                              <tr>
+
+                              <th>제목</th>
+                              <th>출판일</th>
+                              <th>링크</th>
+                              {% for report in report %}
+                              <tr align="center"> 
+            
+                              <div>{%if report.site == '포스코경영연구원'%}
+                                <td>{{report.title}}</td>
+                                <td>{{report.published_date|date:"Y.m.d"}}</td>
+                                <td><button type="submit" class="btn btn-success"  style="text-align:right;" onclick="window.open('{{report.link}}')">Go</button></td>
+                                      {%endif%}{%endfor%}
+                                </div>
+                              </tr>
+                            </tr>
+                              </table>
+                  </tbody> 
+                  </div>
+                  <br>
+
+                  <div>
+                      <tbody>
+                             <table class='scrolltbody' style="margin:auto; text-align: center;">
+                                  <label style ="font-size:18pt ; width:600px; margin:auto; text-align: right; ">한전경제연구원</label>
+                                  <tr>
+
+                                  <th>제목</th>
+                                  <th>출판일</th>
+                                  <th>링크</th>
+                                  {% for report in report %}
+                                  <tr align="center"> 
+                
+                                  <div>{%if report.site == '한전경제연구원'%}
+                                    <td>{{report.title}}</td>
+                                    <td>{{report.published_date|date:"Y.m.d"}}</td>
+                                    <td><button type="submit" class="btn btn-success"  style="text-align:right;" onclick="window.open('{{report.link}}')">Go</button></td>
+                                          {%endif%}{%endfor%}
+                                    </div>
+                                  </tr>
+                                </tr>
+                                  </table>
+                      </tbody> 
+                      </div>
+                      <br>
+
+
+                      <div>
+                      <tbody>
+                             <table class='scrolltbody' style="margin:auto; text-align: center;">
+                                  <label style ="font-size:18pt ; width:600px; margin:auto; text-align: right; ">에너지기술평가원</label>
+                                  <tr>
+
+                                  <th>제목</th>
+                                  <th>출판일</th>
+                                  <th>링크</th>
+                                  {% for report in report %}
+                                  <tr align="center"> 
+                
+                                  <div>{%if report.site == '에너지기술평가원'%}
+                                    <td>{{report.title}}</td>
+                                    <td>{{report.published_date|date:"Y.m.d"}}</td>
+                                    <td><button type="submit" class="btn btn-success"  style="text-align:right;" onclick="window.open('{{report.link}}')">Go</button></td>
+                                          {%endif%}{%endfor%}
+                                    </div>
+                                  </tr>
+                                </tr>
+                                  </table>
+                      </tbody> 
+                      </div>
+                      <br>
+
+
+                      <div>
+                      <tbody>
+                             <table class='scrolltbody' style="margin:auto; text-align: center;">
+                                  <label style ="font-size:18pt ; width:600px; margin:auto; text-align: right; ">KDB미래전략연구소</label>
+                                  <tr>
+
+                                  <th>제목</th>
+                                  <th>출판일</th>
+                                  <th>링크</th>
+                                  {% for report in report %}
+                                  <tr align="center"> 
+                
+                                  <div>{%if report.site == 'KDB미래전략연구소'%}
+                                    <td>{{report.title}}</td>
+                                    <td>{{report.published_date|date:"Y.m.d"}}</td>
+                                    <td><button type="submit" class="btn btn-success"  style="text-align:right;" onclick="window.open('{{report.link}}')">Go</button></td>
+                                          {%endif%}{%endfor%}
+                                    </div>
+                                  </tr>
+                                </tr>
+                                  </table>
+                      </tbody> 
+                      </div>
+                      <br>
+
+
+
+
+                      <div>
+                          <tbody>
+                                    <table class='scrolltbody' style="margin:auto; text-align: center;">
+                                     <label style ="font-size:18pt ; width:670px; margin:auto; text-align: right; ">수출입은행해외경제연구소</label>
+
+                                      <tr>
+                                      <th>제목</th>
+                                      <th>출판일</th>
+                                      <th>링크</th>
+                                      {% for report in report %}
+                                      <tr align="center"> 
+                    
+                                      <div>{%if report.site == '수출입은행해외경제연구소'%}
+                                        <td>{{report.title}}</td>
+                                        <td>{{report.published_date|date:"Y.m.d"}}</td>
+                                        <td><button type="submit" class="btn btn-success"  style="text-align:right;" onclick="window.open('{{report.link}}')">Go</button></td>
+                                              {%endif%}{%endfor%}
+                                        </div>
+                                      </tr>
+                                    </tr>
+                                      </table>
+                          </tbody> 
+                          </div>                               
+<!--
+      <div>
+          <tbody>
+                 <table class='scrolltbody'  style="margin:auto; text-align: center;">
+                     <label style ="font-size:18pt ; width:600px; margin:auto; text-align: right; ">한국개발연구원</label>
+                      <tr>
+
+                      <th>제목</th>
+                      <th>출판일</th>
+                      <th>링크</th>
+                      {% for report in report %}
+                      <tr align="center"> 
+    
+                      <div>{%if report.site == '한국개발연구원'%}
+                        <td>{{report.title}}</td>
+                        <td>{{report.published_date|date:"Y.m.d"}}</td>
+                        <td><button type="submit" class="btn btn-success"  style="text-align:right;" onclick="window.open('{{report.link}}')">Go</button></td>
+                              {%endif%}{%endfor%}
+                        </div>
+                      </tr>
+                    </tr>
+                      </table>
+          </tbody> 
+          </div>
+          <br>
+!-->
+
+
+      <div>
+          <tbody>
+                 <table class='scrolltbody'  style="margin:auto; text-align: center;">
+                     <label style ="font-size:18pt ; width:600px; margin:auto; text-align: right; ">월간수소경제</label>
+                      <tr>
+
+                      <th>제목</th>
+                      <th>출판일</th>
+                      <th>링크</th>
+                      {% for report in report %}
+                      <tr align="center"> 
+    
+                      <div>{%if report.site == '월간수소경제'%}
+                        <td>{{report.title}}</td>
+                        <td>{{report.published_date|date:"Y.m.d"}}</td>
+                        <td><button type="submit" class="btn btn-success"  style="text-align:right;" onclick="window.open('{{report.link}}')">Go</button></td>
+                              {%endif%}{%endfor%}
+                        </div>
+                      </tr>
+                    </tr>
+                      </table>
+          </tbody> 
+          </div>
+          <br>
+
+</body>

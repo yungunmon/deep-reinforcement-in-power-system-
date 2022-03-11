@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Morning Briefing</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+</head>
+<body>
+  <nav class="navbar navbar-default">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <a class="navbar-brand" href="{% url 'MorningBriefing:home' %}">Home</a>
+      </div>
+      <ul class="nav navbar-nav">
+        <li>
+        </li>
+        <li><a href = "{% url 'MorningBriefing:발전사동향' %}">발전사동향</a></li>
+        <li><a href = "{% url 'MorningBriefing:전력산업/시장'%}">전력산업/시장</a></li>
+        <li><a href = "{% url 'MorningBriefing:신재생에너지/기술'%}">신재생에너지/기술</a></li>
+        <li><a href = "{% url 'MorningBriefing:경제'%}">경제</a></li> 
+
+        <li><a href = "{% url 'MorningBriefing:파워인사이트'%}">파워인사이트</a></li>
+        <li><a href = "{% url 'MorningBriefing:보고서'%}">보고서</a></li>
+
+      </ul>
+    </div>
+  </nav>
+
+<div class="container" style="width: 90%!important" >
+    <table class="table table-striped">
+       <thead> 
+        <tr>
+        <div><B><font size=10>경제</font></B></div>
+        <br>
+        <br>
+        <br>
+        </tr>
+        </thead>
+        <tr style= "width:40% ;margin:auto; text-align: right;" >            
+           <form method="post">
+                  {% csrf_token %}
+                  
+
+                  <label  style="text-align: right" > <font size = 4><B>start date<input type="date" style = "text-align: right;border: 0px; font-size: 3" name="start_date" value="{{start_date}}"></B></font>
+               
+                  <label style="text-align: right"><font size = 4><B>end date<input type="date" style = "text-align: right;border: 0px; font-size: 3" name="end_date" value="{{end_date}}"></B></font>
+               
+               
+                  <input name="search" value="{{search}}">
+                  <input type="submit" class="btn btn-success" value="검색">
+            
+
+          </form>
+</td>
+        </tr>
+
+        <tr>
+                
+
+            <th scope="col" style= "width:40%">제목</th>
+
+            <th scope="col" style= "width:15%">출처</th>
+
+            <th scope="col" style= "width:10%">날짜</th>
+
+            <th scope="col" style= "width:35%">기능</th>    
+                
+              
+        </tr>
+
+        </thead>              
+
+             
+
+        <tbody> 
+
+            {% for news in news %}
+
+            {% if news.Data_field == 'D' %}
+        <tr>
+
+
+            <td class="title">
+
+                    <p><font size=3><B>
+                      <a onclick="checker({{news.pk}})" style ="font-size:18pt">
+                      <span id="check_{{news.pk}}" >{%if news.Display == 'A'%}√ {%endif%}{%if news.Display == 'B'%}ㅁ {%endif%}</span></a>
+                       {{news.Title}} 
+                         <p id='newscomment_{{news.pk}}'>{{news.Comment}}</p>
+            </td>
+            <td class="company">
+              {{news.Company}}
+            </td>
+            <td class="date">{{news.Published_date|date:"Y.m.d"}}
+            </td>
+                   
+
+              </span>
+              <td class="action">
+              <div align="right">
+                <div class="btn-group">
+                  <button type="submit" class="btn btn-success"  style="text-align:right;" onclick="window.open('{{news.Link}}')">Go</button>
+             <!--     <a class="btn btn-light" href="{%url 'MorningBriefing:modify_title' pk=news.pk %}">Modify_title</a> -->
+                   <a  data-toggle="modal" class="btn btn-info" data-target="#addcomment{{news.pk}}">Add comment</a></b></h1>
+            <div class="modal fade" id="addcomment{{news.pk}}" tabindex="-1" role="dialog" aria-labelledby="title{{news.pk}}" aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+            <div class="modal-header">
+              <div class = "row justify-content-center">
+            <h3 class="modal-title" id="title{{news.pk}}">코멘트 추가하기</h3>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            </button>
+          </div>
+            </div>
+            <div class="modal-body">
+              <input id = "comment_{{news.pk}}"  type="text" class="form-control" placeholder='코멘트 입력하세요.'style="width:100%;text-align: center;">
+            </div>
+            <div class="modal-footer">
+            <button onclick="add_comment({{news.pk}})" class="btn btn-sm btn-primary">제출</button>
+            <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">뒤로가기</button>
+            </div>
+            </div>
+            </div>
+          </div>
+                  <a href="{% url 'MorningBriefing:delete_news' pk=news.pk %}" class="btn btn-warning del" role="button" onclick="return confirm('정말 삭제하시겠습니까?')">Delete comment</a>
+                  <a href="{% url 'MorningBriefing:delete' pk=news.pk %}" class="btn btn-danger del" role="button" onclick="return confirm('정말 삭제하시겠습니까?')">Delete News</a>
+              </div>
+              </div>
+ </td>
+
+            {% endif %}
+            {% endfor %}
+
+          </td>
+        </tr>
+        
+        
+    </script>
+          
+
+        </tbody>
+
+    </table>
+     <nav aria-label="Page navigation">
+    <ul class="pagination">
+      {% if news.has_previous %}
+        <li>
+          <a href="?page={{ news.previous_page_number }}" aria-label="Previous">
+            <span aria-hidden="true">&laquo;</span>
+          </a>
+        </li>
+      {% else %}
+        <li class="disabled"><span>&laquo;</span></li>
+      {% endif %}
+
+       {% if news.number > 2 %} 
+      <li><a href="?page={{ 1 }}"> 1 </a></li> 
+      <li ><span>...<span class="sr-only">...</span></span></li>
+      {% endif %}
+
+ {% for i in page_range %}
+        {% if news.number == i %}
+          <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+        {% else %}
+          <li><a href="?page={{ i }}">{{ i }}</a></li>
+        {% endif %}
+      {% endfor %}
+
+      {% if news.number < max_index %}
+       <li ><span>...<span class="sr-only">...</span></span></li>
+        <li><a href="?page={{ max_index|add:'2' }}">{{ max_index|add:"2" }}</a></li> 
+      {% endif %}
+
+      {% if news.has_next %}
+        <li>
+          <a href="?page={{ news.next_page_number }}" aria-label="Next">
+            <span aria-hidden="true">&raquo;</span>
+          </a>
+        </li>
+      {% else %}
+        <li class="disabled"><span>&raquo;</span></li>
+      {% endif %}
+    </ul>
+  </nav>
+<!--<div class="pagination">
+
+    <span class="step-links">
+        {% if news.has_previous %}
+            <a href="?page=1">&laquo; first</a>
+            <a href="?page={{ news.previous_page_number }}">previous</a>
+        {% endif %}
+        <span class="current">
+        
+            Page {{ news.number }} of {{ news.paginator.num_pages }}.
+        </span>
+
+        {% if news.has_next %}
+            <a href="?page={{ news.next_page_number }}">next</a>
+            <a href="?page={{ news.paginator.num_pages }}">last &raquo;</a>
+        {% endif %}
+    </span>
+</div>-->
+</div>
+<script>
+  function checker(pk)
+  {
+    $.ajax({
+       url: "{% url 'MorningBriefing:news_display'%}",
+          method: "POST",
+          data:{
+            pk : pk,
+          },
+           success: function(data){
+              var a_id = data.a_id;
+              var display = data.display;
+              console.log(data.a_id,data.display)
+              if (display =="A"){
+                document.getElementById(a_id).innerHTML = '√';
+              }
+              if(display =="B"){
+                document.getElementById(a_id).innerHTML = 'ㅁ';
+              };
+
+              },
+            });
+  }
+   function add_comment(pk)
+  {
+    var c_id = "#comment_"+pk;
+    console.log(c_id);
+    var comment =  $(c_id).val();
+    console.log(comment);
+    $.ajax({
+       url: "{% url 'MorningBriefing:add_comment'%}",
+          method: "POST",
+          data:{
+            pk : pk,
+            comment: comment,
+          },
+           success: function(data){
+            var newscomment = $("#newscomment_"+data.pk);
+            newscomment.html(data.comment);
+            console.log(newscomment)
+            }
+          });
+  }
+</script>
+</body>

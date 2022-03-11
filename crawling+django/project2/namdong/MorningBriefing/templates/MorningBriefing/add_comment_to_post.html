@@ -1,0 +1,14 @@
+<h1>New comment</h1>
+{% block content %}
+<form method="POST" class="post-form" ;width=device-width action="">
+  {% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" class="save btn btn-default" value="Add comment">
+</form>
+{% endblock %}
+<!--<String referer = request.getHeader("referer");
+ if(referer==null)referer = "/"; >
+     <script language="javascript">
+      location.href="{{referer}}";
+     </script>
+-->

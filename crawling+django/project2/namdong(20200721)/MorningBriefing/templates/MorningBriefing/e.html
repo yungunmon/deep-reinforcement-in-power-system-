@@ -1,0 +1,609 @@
+{%load static%}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Morning Briefing</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=2">
+  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  <script src="{% static 'ckeditor/ckeditor.js' %}"></script>
+
+</head>
+
+<body>
+  <nav class="navbar navbar-default fixed-top">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <a class="navbar-brand" href="{% url 'MorningBriefing:home' %}">Home</a>
+      </div>
+      <ul class="nav navbar-nav">
+
+        <li><a href = "{% url 'MorningBriefing:발전사동향'%}"><i class="fa fa-arrow-left" aria-hidden="true"></i> 이전 단계로</a></li>
+        <li><a href = "{% url 'MorningBriefing:보고서'%}">다음 단계로 <i class="fa fa-arrow-right" aria-hidden="true"></i></a></li>
+
+      </ul>
+    </div>
+  </nav>
+
+<div class="container" style="width: 90%!important" >
+
+
+  <div><B><font size=5>발전사동향</font></B></div>
+    <table class="table table-striped">
+        <thead> 
+        <tr>
+            <th scope="col" style= "width:40%">제목</th>
+
+            <th scope="col" style= "width:15%">출처</th>
+
+            <th scope="col" style= "width:10%">날짜</th>
+
+            <th scope="col" style= "width:35%">기능</th>    
+                
+              
+        </tr>
+
+        </thead> 
+             
+
+        <tbody> 
+
+            {% for news in news %}
+            {% if news.Data_field == 'A' %}
+        <tr>
+
+
+            <td class="title">
+
+                    <font size=3>
+                       <p  id='news_{{news.pk}}'>{{news.Title|safe}}</p>
+
+            </td>
+            <td class="company">
+              {{news.Company}}
+            </td>
+            <td class="date">{{news.Published_date|date:"Y.m.d"}}
+            </td>
+                   
+
+              </span>
+                <td class="action">
+              <div align="left"><a class="btn btn-success" data-toggle="modal"   style="text-align:right;" data-target="#managenews_{{news.pk}}">뉴스 관리</a> </div>
+                <div class="modal fade" id="managenews_{{news.pk}}" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+            <div class="modal-header">
+              <div class = "row justify-content-center">
+            <h3 class="modal-title" >뉴스 관리</h3>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            </button>
+          </div>
+            </div>
+            <div class="modal-body">
+              <table style='width:100%'>
+                <tr>
+                  <td>1. 뉴스 범주 수정</td><td><select id='newscategory_{{news.pk}}' class='custom-select'><option value = '{{news.Data_field}}'>{% if news.Data_field == 'A' %}발전사동향{%elif news.Data_field == 'B'%}전력산업/시장{%elif news.Data_field == 'C'%}신재생에너지/기술{%elif news.Data_field == 'D'%}경제{%endif%}</option><option value = 'A'>발전사동향</option><option value = 'B'>전력산업/시장</option><option value = 'C'>신재생에너지/기술</option><option value = 'D'>경제</option></select></td>
+                </tr>
+                <tr>
+                  <td>2. 뉴스 제목 수정{{news.pk}}</td>
+                  <td><textarea id = 'newstitle_{{news.pk}}'>{{news.Title}}</textarea></td>
+                </tr>
+
+              </table>
+            </div>
+            <div class="modal-footer"><a href="{% url 'MorningBriefing:delete_news' pk=news.pk %}" class="btn btn-warning del" role="button" onclick="return confirm('정말 삭제하시겠습니까?')">Delete News</a>
+            <button onclick="manage_news({{news.pk}})" class="btn btn-sm btn-primary">제출</button>
+            <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">뒤로가기</button>
+            </div>
+            </div>
+            </div>
+          </div></div>
+          {%for comment in comments%}
+          {%if comment.news == news %}
+                       
+          <tr><td><p id='newscomment_{{comment.pk}}'>- {{comment.content|safe}}</p></td><td></td><td></td><td>
+           <a  data-toggle="modal" class="btn btn-info del" data-target="#managecomment_{{comment.pk}}">코멘트 관리           </a>
+          <div class="modal fade" id="managecomment_{{comment.pk}}" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+            <div class="modal-header">
+              <div class = "row justify-content-center">
+            <h3 class="modal-title" >코멘트 관리</h3>
+            <a class="btn" class="close" data-dismiss="modal" aria-label="Close">
+            </a>
+          </div>
+            </div>
+            <div class="modal-body">
+
+              <table>
+                <tr>
+                  <td>
+                  <textarea id='commenttitle_{{comment.pk}}'>{{comment.content}}</textarea>
+                </td>
+                </tr>
+              </table>
+            </div>
+            <div class="modal-footer"><a href="{% url 'MorningBriefing:delete' pk=comment.pk %}" class="btn btn-danger del" role="button" onclick="return confirm('정말 삭제하시겠습니까?')">Delete Comment</a>
+            <button  onclick="manage_comments({{comment.pk}})" class="btn btn-sm btn-primary" >제출</button>
+            </div>
+            </div>
+            </div>`</td></tr>
+
+
+ 
+
+                       {%endif%}
+                       {%endfor%}
+                  
+
+           
+</div>
+                      
+
+                  
+
+            {% endif %}
+            {% endfor %}
+
+          </td>
+        </tr>
+        
+        
+    </script>
+          
+
+        </tbody>
+
+    </table>
+
+
+
+
+  <div><B><font size=5>전력산업/시장</font></B></div>
+    <table class="table table-striped">
+        <thead> 
+        <tr>
+            <th scope="col" style= "width:40%">제목</th>
+
+            <th scope="col" style= "width:15%">출처</th>
+
+            <th scope="col" style= "width:10%">날짜</th>
+
+            <th scope="col" style= "width:35%">기능</th>    
+                
+              
+        </tr>
+
+        </thead> 
+             
+
+        <tbody> 
+
+            {% for news in news %}
+            {% if news.Data_field == 'B' %}
+        <tr>
+
+
+            <td class="title">
+
+                    <font size=3>
+                       <p  id='news_{{news.pk}}'>{{news.Title|safe}}</p>
+
+            </td>
+            <td class="company">
+              {{news.Company}}
+            </td>
+            <td class="date">{{news.Published_date|date:"Y.m.d"}}
+            </td>
+                   
+
+              </span>
+                <td class="action">
+              <div align="left"><a class="btn btn-success" data-toggle="modal"   style="text-align:right;" data-target="#managenews_{{news.pk}}">뉴스 관리</a> </div>
+                <div class="modal fade" id="managenews_{{news.pk}}" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+            <div class="modal-header">
+              <div class = "row justify-content-center">
+            <h3 class="modal-title" >뉴스 관리</h3>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            </button>
+          </div>
+            </div>
+            <div class="modal-body">
+              <table style='width:100%'>
+                <tr>
+                  <td>1. 뉴스 범주 수정</td><td><select id='newscategory_{{news.pk}}' class='custom-select'><option value = '{{news.Data_field}}'>{% if news.Data_field == 'A' %}발전사동향{%elif news.Data_field == 'B'%}전력산업/시장{%elif news.Data_field == 'C'%}신재생에너지/기술{%elif news.Data_field == 'D'%}경제{%endif%}</option><option value = 'A'>발전사동향</option><option value = 'B'>전력산업/시장</option><option value = 'C'>신재생에너지/기술</option><option value = 'D'>경제</option></select></td>
+                </tr>
+                <tr>
+                  <td>2. 뉴스 제목 수정{{news.pk}}</td>
+                  <td><textarea id = 'newstitle_{{news.pk}}'>{{news.Title}}</textarea></td>
+                </tr>
+
+              </table>
+            </div>
+            <div class="modal-footer"><a href="{% url 'MorningBriefing:delete_news' pk=news.pk %}" class="btn btn-warning del" role="button" onclick="return confirm('정말 삭제하시겠습니까?')">Delete News</a>
+            <button onclick="manage_news({{news.pk}})" class="btn btn-sm btn-primary">제출</button>
+            <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">뒤로가기</button>
+            </div>
+            </div>
+            </div>
+          </div></div>
+          {%for comment in comments%}
+          {%if comment.news == news %}
+                       
+          <tr><td><p id='newscomment_{{comment.pk}}'>- {{comment.content|safe}}</p></td><td></td><td></td><td>
+           <a  data-toggle="modal" class="btn btn-info del" data-target="#managecomment_{{comment.pk}}">코멘트 관리           </a>
+          <div class="modal fade" id="managecomment_{{comment.pk}}" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+            <div class="modal-header">
+              <div class = "row justify-content-center">
+            <h3 class="modal-title" >코멘트 관리</h3>
+            <a class="btn" class="close" data-dismiss="modal" aria-label="Close">
+            </a>
+          </div>
+            </div>
+            <div class="modal-body">
+
+              <table>
+                <tr>
+                  <td>
+                  <textarea id='commenttitle_{{comment.pk}}'>{{comment.content}}</textarea>
+                </td>
+                </tr>
+              </table>
+            </div>
+            <div class="modal-footer"><a href="{% url 'MorningBriefing:delete' pk=comment.pk %}" class="btn btn-danger del" role="button" onclick="return confirm('정말 삭제하시겠습니까?')">Delete Comment</a>
+            <button  onclick="manage_comments({{comment.pk}})" class="btn btn-sm btn-primary" >제출</button>
+            </div>
+            </div>
+            </div>`</td></tr>
+
+
+ 
+
+                       {%endif%}
+                       {%endfor%}
+                  
+
+           
+</div>
+                      
+
+                  
+
+            {% endif %}
+            {% endfor %}
+
+          </td>
+        </tr>
+        
+        
+    </script>
+          
+
+        </tbody>
+
+    </table>
+
+
+
+    <div><B><font size=5>신재생에너지/기술</font></B></div>
+    <table class="table table-striped">
+        <thead> 
+        <tr>
+            <th scope="col" style= "width:40%">제목</th>
+
+            <th scope="col" style= "width:15%">출처</th>
+
+            <th scope="col" style= "width:10%">날짜</th>
+
+            <th scope="col" style= "width:35%">기능</th>    
+                
+              
+        </tr>
+
+        </thead> 
+             
+
+        <tbody> 
+
+            {% for news in news %}
+            {% if news.Data_field == 'C' %}
+        <tr>
+
+
+            <td class="title">
+
+                    <font size=3>
+                       <p  id='news_{{news.pk}}'>{{news.Title|safe}}</p>
+
+            </td>
+            <td class="company">
+              {{news.Company}}
+            </td>
+            <td class="date">{{news.Published_date|date:"Y.m.d"}}
+            </td>
+                   
+
+              </span>
+                <td class="action">
+              <div align="left"><a class="btn btn-success" data-toggle="modal"   style="text-align:right;" data-target="#managenews_{{news.pk}}">뉴스 관리</a></div>
+                <div class="modal fade" id="managenews_{{news.pk}}" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+            <div class="modal-header">
+              <div class = "row justify-content-center">
+            <h3 class="modal-title" >뉴스 관리</h3>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            </button>
+          </div>
+            </div>
+            <div class="modal-body">
+              <table style='width:100%'>
+                <tr>
+                  <td>1. 뉴스 범주 수정</td><td><select id='newscategory_{{news.pk}}' class='custom-select'><option value = '{{news.Data_field}}'>{% if news.Data_field == 'A' %}발전사동향{%elif news.Data_field == 'B'%}전력산업/시장{%elif news.Data_field == 'C'%}신재생에너지/기술{%elif news.Data_field == 'D'%}경제{%endif%}</option><option value = 'A'>발전사동향</option><option value = 'B'>전력산업/시장</option><option value = 'C'>신재생에너지/기술</option><option value = 'D'>경제</option></select></td>
+                </tr>
+                <tr>
+                  <td>2. 뉴스 제목 수정{{news.pk}}</td>
+                  <td><textarea id = 'newstitle_{{news.pk}}'>{{news.Title}}</textarea></td>
+                </tr>
+
+              </table>
+            </div>
+            <div class="modal-footer"><a href="{% url 'MorningBriefing:delete_news' pk=news.pk %}" class="btn btn-warning del" role="button" onclick="return confirm('정말 삭제하시겠습니까?')">Delete News</a>
+            <button onclick="manage_news({{news.pk}})" class="btn btn-sm btn-primary">제출</button>
+            <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">뒤로가기</button>
+            </div>
+            </div>
+            </div>
+          </div></div>
+          {%for comment in comments%}
+          {%if comment.news == news %}
+                       
+          <tr><td><p id='newscomment_{{comment.pk}}'>- {{comment.content|safe}}</p></td><td></td><td></td><td>
+           <a  data-toggle="modal" class="btn btn-info del" data-target="#managecomment_{{comment.pk}}">코멘트 관리           </a>
+          <div class="modal fade" id="managecomment_{{comment.pk}}" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+            <div class="modal-header">
+              <div class = "row justify-content-center">
+            <h3 class="modal-title" >코멘트 관리</h3>
+            <a class="btn" class="close" data-dismiss="modal" aria-label="Close">
+            </a>
+          </div>
+            </div>
+            <div class="modal-body">
+
+              <table>
+                <tr>
+                  <td>
+                  <textarea id='commenttitle_{{comment.pk}}'>{{comment.content}}</textarea>
+                </td>
+                </tr>
+              </table>
+            </div>
+            <div class="modal-footer"><a href="{% url 'MorningBriefing:delete' pk=comment.pk %}" class="btn btn-danger del" role="button" onclick="return confirm('정말 삭제하시겠습니까?')">Delete Comment</a>
+            <button  onclick="manage_comments({{comment.pk}})" class="btn btn-sm btn-primary" >제출</button>
+            </div>
+            </div>
+            </div>`</td></tr>
+
+
+ 
+
+                       {%endif%}
+                       {%endfor%}
+                  
+
+           
+</div>
+                      
+
+                  
+
+            {% endif %}
+            {% endfor %}
+
+          </td>
+        </tr>
+        
+        
+    </script>
+          
+
+        </tbody>
+
+    </table>
+
+
+
+
+    <div><B><font size=5>경제</font></B></div>
+    <table class="table table-striped">
+        <thead> 
+        <tr>
+            <th scope="col" style= "width:40%">제목</th>
+
+            <th scope="col" style= "width:15%">출처</th>
+
+            <th scope="col" style= "width:10%">날짜</th>
+
+            <th scope="col" style= "width:35%">기능</th>    
+                
+              
+        </tr>
+
+        </thead> 
+             
+
+        <tbody> 
+
+            {% for news in news %}
+            {% if news.Data_field == 'D' %}
+        <tr>
+
+
+            <td class="title">
+
+                    <font size=3>
+                       <p  id='news_{{news.pk}}'>{{news.Title|safe}}</p>
+
+            </td>
+            <td class="company">
+              {{news.Company}}
+            </td>
+            <td class="date">{{news.Published_date|date:"Y.m.d"}}
+            </td>
+                   
+
+              </span>
+                <td class="action">
+              <div align="left"><a class="btn btn-success" data-toggle="modal"   style="text-align:right;" data-target="#managenews_{{news.pk}}">뉴스 관리</a>  </div>
+                <div class="modal fade" id="managenews_{{news.pk}}" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+            <div class="modal-header">
+              <div class = "row justify-content-center">
+            <h3 class="modal-title" >뉴스 관리</h3>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            </button>
+          </div>
+            </div>
+            <div class="modal-body">
+              <table style='width:100%'>
+                <tr>
+                  <td>1. 뉴스 범주 수정</td><td><select id='newscategory_{{news.pk}}' class='custom-select'><option value = '{{news.Data_field}}'>{% if news.Data_field == 'A' %}발전사동향{%elif news.Data_field == 'B'%}전력산업/시장{%elif news.Data_field == 'C'%}신재생에너지/기술{%elif news.Data_field == 'D'%}경제{%endif%}</option><option value = 'A'>발전사동향</option><option value = 'B'>전력산업/시장</option><option value = 'C'>신재생에너지/기술</option><option value = 'D'>경제</option></select></td>
+                </tr>
+                <tr>
+                  <td>2. 뉴스 제목 수정{{news.pk}}</td>
+                  <td><textarea id = 'newstitle_{{news.pk}}'>{{news.Title}}</textarea></td>
+                </tr>
+
+              </table>
+            </div>
+            <div class="modal-footer"><a href="{% url 'MorningBriefing:delete_news' pk=news.pk %}" class="btn btn-warning del" role="button" onclick="return confirm('정말 삭제하시겠습니까?')">Delete News</a>
+            <button onclick="manage_news({{news.pk}})" class="btn btn-sm btn-primary">제출</button>
+            <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">뒤로가기</button>
+            </div>
+            </div>
+            </div>
+          </div></div>
+          {%for comment in comments%}
+          {%if comment.news == news %}
+                       
+          <tr><td><p id='newscomment_{{comment.pk}}'>- {{comment.content|safe}}</p></td><td></td><td></td><td>
+           <a  data-toggle="modal" class="btn btn-info del" data-target="#managecomment_{{comment.pk}}">코멘트 관리           </a>
+          <div class="modal fade" id="managecomment_{{comment.pk}}" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+            <div class="modal-header">
+              <div class = "row justify-content-center">
+            <h3 class="modal-title" >코멘트 관리</h3>
+            <a class="btn" class="close" data-dismiss="modal" aria-label="Close">
+            </a>
+          </div>
+            </div>
+            <div class="modal-body">
+
+              <table>
+                <tr>
+                  <td>
+                  <textarea id='commenttitle_{{comment.pk}}'>{{comment.content}}</textarea>
+                </td>
+                </tr>
+              </table>
+            </div>
+            <div class="modal-footer"><a href="{% url 'MorningBriefing:delete' pk=comment.pk %}" class="btn btn-danger del" role="button" onclick="return confirm('정말 삭제하시겠습니까?')">Delete Comment</a>
+            <button  onclick="manage_comments({{comment.pk}})" class="btn btn-sm btn-primary" >제출</button>
+            </div>
+            </div>
+            </div>`</td></tr>
+
+
+ 
+
+                       {%endif%}
+                       {%endfor%}
+                  
+
+           
+</div>
+                      
+
+                  
+
+            {% endif %}
+            {% endfor %}
+
+          </td>
+        </tr>
+        
+        
+    </script>
+          
+
+        </tbody>
+
+    </table>
+
+
+
+
+
+<script>
+  function manage_news(pk)
+  {
+    var newscategory_id = "#newscategory_"+String(pk);
+    var newstitle_id = "newstitle_"+String(pk);
+    var newscategory = $(newscategory_id).val();
+    console.log(newstitle_id);
+    var newstitle = CKEDITOR.instances[newstitle_id].getData();
+    $.ajax({
+       url: "{% url 'MorningBriefing:manage_news'%}",
+          method: "POST",
+          data:{
+            pk : pk,
+            newscategory : newscategory,
+            newstitle : newstitle,
+          },
+           success: function(){
+            alert('변경되었습니다.');
+            window.location.reload();
+              },
+            });
+  }
+   function manage_comments(pk)
+  {
+    var c_id = "commenttitle_"+String(pk);
+    var comment = CKEDITOR.instances[c_id].getData();
+    console.log(c_id,comment);
+    $.ajax({
+       url: "{% url 'MorningBriefing:manage_comments'%}",
+          method: "POST",
+          data:{
+            pk : pk,
+            comment: comment,
+          },
+           success: function(){
+            alert('변경되었습니다.');
+            window.location.reload();
+            },
+          });
+  }
+</script>
+
+  <script>
+{%for news in news%}
+    CKEDITOR.replace('newstitle_{{news.pk}}', {width: '100%',height: 100,extraPlugins: 'colorbutton,font,',removeButtons: '',toolbarGroups: [{name: 'colors'},{name: 'basicstyles',}]});    
+{%endfor%}
+{%for comment in comments%}
+    CKEDITOR.replace('commenttitle_{{comment.pk}}', {width: '100%',height: 100,extraPlugins: 'colorbutton,font,',removeButtons: '',toolbarGroups: [{name: 'colors'},{name: 'basicstyles',}]});
+{%endfor%}
+  </script>
+</div>
+</body>

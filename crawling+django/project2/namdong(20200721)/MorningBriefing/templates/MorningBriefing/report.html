@@ -1,0 +1,222 @@
+{%load static%}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Morning Briefing</title>
+  <meta content="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Nanum+Gothic:400,700,800&amp;subset=korean" rel="stylesheet">
+<link href='//cdn.rawgit.com/young-ha/webfont-archive/master/css/NotoSansCJKkr.css' rel='stylesheet' type='text/css'>
+  <style type="text/css">
+@import url(//fonts.googleapis.com/earlyaccess/nanummyeongjo.css);
+@import url(//fonts.googleapis.com/earlyaccess/nanummyeongjo.css);
+@font-face { font-family: 'H2HDRM'; src: url("{% static 'H2HDRM.woff'%}") format('woff');  }
+@font-face { font-family: 'HANBatang'; src: url("{% static 'HANBatang.woff'%}") format('woff'); }
+@font-face { font-family: 'MalgunGothic';src: url("{% static 'MalgunGothic.eot'%}") format('embedded-opentype');}
+    @font-face { font-family: 'HCRDotum'; src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_four@1.0/HCRDotum.woff') format('woff'); font-weight: normal; font-style: normal; }
+@font-face { font-family: 'NanumBarunGothic';
+src: url('/fonts/NanumBarunGothic.eot');
+src: url('/fonts/NanumBarunGothic.eot') format('embedded-opentype'),
+url('/fonts/NanumBarunGothic.woff') format('woff');}
+
+        label,h1, h2, h3, h4, h5, dl, dt, dd, ul, li, ol, th, td, p, blockquote, form, fieldset, legend, div,body { -webkit-print-bgcolor-adjust:exact; }
+        label,h1, h2, h3, h4, h5, dl, dt, dd, ul, li, ol, th, td, p, blockquote, form, fieldset, legend, div,body {
+font-family : Nanum
+font-size = 12pt
+ }      
+ body {
+
+margin: 0;
+
+padding: 0;
+
+}
+
+* {
+
+box-sizing: border-box;
+
+-moz-box-sizing: border-box;
+
+}
+
+.page {
+
+width: 21cm;
+
+min-height: 29.7cm;
+
+padding: 2cm;
+
+margin: 0 auto;
+
+background:#eee;
+
+}
+
+.subpage {
+
+border: 2px red solid;
+
+background:#fff;   
+
+height: 257mm;
+
+}
+
+
+
+@page {
+
+size: A4;
+
+margin: 10, 10 , 10 ,;
+
+}
+
+@media print {
+
+html, body {
+
+width: 210mm;
+
+height: 297mm;
+
+}
+
+.page {
+
+margin: 0;
+
+border: initial;
+
+width: initial;
+
+min-height: initial;
+
+box-shadow: initial;
+
+background: initial;
+
+page-break-after: always;
+
+}
+p {
+    margin-bottom:  0;
+    margin-top:     0;
+}
+}
+.midindex{
+    width:10.92mm;height:10.92mm;background-color: #d6d6d6; border-bottom: 2px solid;text-align: center;vertical-align: center;font-size:18pt; padding-bottom:4pt;  padding-top:4pt;font-family:H2HDRM;
+}
+.midindex2{
+    width:60mm;height:10.92mm;font-size:18pt; padding-bottom:4pt;  padding-top:4pt; padding-left:4pt;border-bottom: 2px solid;font-family:H2HDRM;}
+
+  </style>
+
+</head>
+
+<body style="max-width: 210mm;margin-left: auto; margin-right: auto;">
+
+<div style ="height:4px;width:210mm;background:#c7eafb;"></div>    
+<div>
+<a href= "{%url 'MorningBriefing:home'%}"><img src="{%static 'report.png'%}" style="width:100%; margin-left: 0; margin-right:0; margin-top: 0; margin-bottom: 0;" ></a>
+</div>    
+    <div style ="background:#c7eafb; align-items: flex-start;"> 
+       <input value= "{{today|date:'yy. m. d'}}" style = "background:#c7eafb;font-family: 'MalgunGothic'; margin-left:13.5pt; right;border: 0px; font-size: 13.5pt;justify-content: space-between;" ><span style="float: right; margin-right: 10px;font-size:13.5pt ;font-family: 'MalgunGothic';"><input value= "인재기술개발원 연구지원부(5724)" style = "background:#c7eafb;font-family: 'MalgunGothic'; width:290px; right;border: 0px; font-size: 13.5pt;justify-content: space-between;" ></span>
+</div>
+
+  
+<br>
+<div>
+    <div class="midtitle" style="display: inline-flex"><div class='midindex'>1</div><span class='midindex2'>발전사 동향</span></div>
+<!--         <label style="border: solid steelblue; border-width: 1 10px 3px ; background:steelblue"><font size = 4><B>1</B></font></label><label style="border: solid steelblue; border-width: 0 0 3px ;">　발전사동향</label> -->
+        <br><br>
+        {% for news in news %}
+        {% if news.Data_field == 'A' %}
+        {% if news.Display == 'A'%}
+                <div style="margin-bottom: 11.2pt">
+                <div style="margin-bottom: 8.4pt" ><font style="font-size:14pt;font-family: 'HANBatang'">○　{{news.Title|safe}}({{news.Company}}, {{news.Published_date|date:'m.d'}})</font></div>
+                {%for comment in comments%}
+                {% if comment.news == news %}
+                {% if comment.content|length != 0%}
+                <div style="margin-bottom: 8.4pt" ><font style="font-size:13pt;font-family: 'HANBatang';padding-left:21pt">-　{{comment.content|safe}}</font></div>
+
+                {% endif %}     
+                {% endif %}
+                {%endfor%}
+                                </div> 
+                        {% endif %}
+                        {% endif %}
+                        {% endfor %}
+                        <br>
+</div>
+<div>
+    <div class="midtitle" style="display: inline-flex"><div class="midindex">2</div><span class="midindex2">전력산업/시장</span></div><br><br>
+        {% for news in news %}
+        {% if news.Data_field == 'B' %}
+        {% if news.Display == 'A'%}
+                <div style="margin-bottom: 11.2pt">
+                <div style="margin-bottom: 8.4pt" ><font style="font-size:14pt;font-family: 'HANBatang'">○　{{news.Title|safe}}({{news.Company}}, {{news.Published_date|date:'m.d'}})</font></div>
+                {%for comment in comments%}
+                {% if comment.news == news %}
+                {% if comment.content|length != 0 %}
+                <div style="margin-bottom: 8.4pt" ><font style="font-size:13pt;font-family: 'HANBatang';padding-left:21pt">-　{{comment.content|safe}}</font></div>
+                {% endif %}     
+                {% endif %}
+                {%endfor%}
+                                </div>   
+                        {% endif %}
+                        {% endif %}
+                        {% endfor %}
+                        <br>
+</div>
+
+<div>        
+    <div class="midtitle" style="display: inline-flex"><div class="midindex">3</div><span class="midindex2">신‧재생에너지/기술</span></div>
+        <br><br>
+        {% for news in news %}
+        {% if news.Data_field == 'C' %}
+        {% if news.Display == 'A'%}
+                <div style="margin-bottom: 11.2pt">
+                <div style="margin-bottom: 8.4pt" ><font style="font-size:14pt;font-family: 'HANBatang'">○　{{news.Title|safe}}({{news.Company}}, {{news.Published_date|date:'m.d'}})</font></div>
+                {%for comment in comments%}
+                {% if comment.news == news %}
+                {% if comment.content|length != 0%}
+                <div style="margin-bottom: 8.4pt" ><font style="font-size:13pt;font-family: 'HANBatang';padding-left:21pt">-　{{comment.content|safe}}</font></div>
+
+                {% endif %}     
+                {% endif %}
+                {%endfor%}  
+                                </div>
+                        {% endif %}
+                        {% endif %}
+                        {% endfor %}
+                        <br>
+</div>
+
+<div>
+    <div class="midtitle" style="display: inline-flex"><div class="midindex">4</div><span class="midindex2">경제/에너지</span></div>
+                     <br><br>
+                {% for news in news %}
+                {% if news.Data_field == 'D' %}
+                {% if news.Display == 'A'%}
+                <div style="margin-bottom: 11.2pt">
+                <div style="margin-bottom: 8.4pt" ><font style="font-size:14pt;font-family: 'HANBatang'">○　{{news.Title|safe}}({{news.Company}}, {{news.Published_date|date:'m.d'}})</font></div>
+                {%for comment in comments%}
+                {% if comment.news == news %}
+                {% if comment.content|length != 0%}
+                <div style="margin-bottom: 8.4pt" ><font style="font-size:13pt;font-family: 'HANBatang';padding-left:21pt">-　{{comment.content|safe}}</font></div>
+
+                {% endif %}     
+                {% endif %}
+                {%endfor%}
+                                </div>   
+                        {% endif %}
+                        {% endif %}
+                        {% endfor %}
+                        <br>
+        
+</div>
+
+</body>
+       

@@ -1,0 +1,12 @@
+cmd
+C:\Users\svr>cd project2
+C:\Users\svr\project2>cd Scripts
+C:\Users\svr\project2\Scripts>activate
+(project2) C:\Users\svr\project2\Scripts>cd ..
+(project2) C:\Users\svr\project2>cd namdong(20200721)
+(project2) C:\Users\svr\project2\namdong(20200721)>py manage.py runserver 0.0.0.0:7777
+
+
+cmd
+C:\Users\svr\project\Scripts>activate
+(project) C:\Users\svr\project\Scripts>py crowl2.py
